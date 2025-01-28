@@ -10,7 +10,16 @@
 <body>
     <div class="overlay"></div>
     <header class="header">
-        <a href="/" class="logo">Addness</a>
+        <div class="header-left">
+            <button class="menu-button" id="menu-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            <a href="/" class="logo">Addness</a>
+        </div>
     </header>
 
     <div class="main-container">
@@ -56,13 +65,13 @@
         <main class="main-content">
             <!-- ホームビュー -->
             <div class="view" id="home-view">
-                <!-- ファーストビューエリア -->
-                <div class="first-view-area">
-                    <!-- 行動喚起と学習再開を横並びに -->
-                    <div class="main-actions">
+                <!-- 1カラムセクション -->
+                <div class="single-column-section">
+                    <!-- チュートリアルを開始しよう -->
+                    <div class="tutorial-section">
                         <div class="action-prompt">
                             <h2>チュートリアルを始めよう</h2>
-                            <p>Workschoolキャリアならではの機能をチュートリアルで体験し、バッジを獲得しましょう。</p>
+                            <p>アクションを進め、新たなスキルを獲得しましょう。</p>
                             <button class="tutorial-button" onclick="startTutorial()">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
@@ -70,50 +79,367 @@
                                 チュートリアルを開始
                             </button>
                         </div>
-                        <div class="continue-learning-section">
-                            <h2>学習を再開する</h2>
-                            <div class="course-scroll" id="continue-learning">
-                                <!-- 続きから学習するコースが動的に追加されます -->
+                    </div>
+
+                    <!-- 学習を再開する -->
+                    <div class="continue-learning-section">
+                        <h2>学習を再開する</h2>
+                        <div class="course-scroll" id="continue-learning">
+                            <!-- 進行中のコースがここに表示されます -->
+                        </div>
+                    </div>
+
+                    <!-- カテゴリ別コース一覧 -->
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>Web開発</h2>
+                        </div>
+                        <div class="category-courses">
+                            <!-- Web開発のコースカード -->
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg" alt="HTML/CSS基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>HTML/CSS基礎</h2>
+                                    </div>
+                                    <p class="course-description">Webの基礎から学ぶ</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 20時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg" alt="JavaScript入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>JavaScript入門</h2>
+                                    </div>
+                                    <p class="course-description">動的なWebサイトの作り方</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 25時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg" alt="React基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>React基礎</h2>
+                                    </div>
+                                    <p class="course-description">モダンなフロントエンド開発</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 30時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg" alt="Vue.js入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Vue.js入門</h2>
+                                    </div>
+                                    <p class="course-description">Progressive Framework入門</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 28時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg" alt="Node.js基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Node.js基礎</h2>
+                                    </div>
+                                    <p class="course-description">サーバーサイドJavaScript</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 35時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 進捗状況（コンパクトに） -->
-                    <div class="progress-overview">
-                        <div class="dashboard-card">
-                            <div class="progress-header">
-                                <h2>学習の進捗</h2>
-                                <div class="progress-bar">
-                                    <div class="progress" style="width: 65%"></div>
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>AI基礎</h2>
+                        </div>
+                        <div class="category-courses">
+                            <!-- AI基礎のコースカード -->
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg" alt="機械学習入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>機械学習入門</h2>
+                                    </div>
+                                    <p class="course-description">AIの基礎を学ぶ</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 40時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
                                 </div>
-                                <p class="progress-info">全体の<span id="total-progress">65</span>%完了</p>
                             </div>
-                            <div class="stats-grid">
-                                <div class="stat-item">
-                                    <span class="stat-label">学習時間</span>
-                                    <span class="stat-value" id="total-hours">24.5</span>h
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg" alt="Python for AI" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Python for AI</h2>
+                                    </div>
+                                    <p class="course-description">AI開発のためのPython</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 30時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">完了コース</span>
-                                    <span class="stat-value" id="completed-courses">2</span>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg" alt="深層学習基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>深層学習基礎</h2>
+                                    </div>
+                                    <p class="course-description">ディープラーニングの基礎</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 45時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-label">質問数</span>
-                                    <span class="stat-value" id="question-count">5</span>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg" alt="自然言語処理" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>自然言語処理</h2>
+                                    </div>
+                                    <p class="course-description">テキスト処理とNLP</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 35時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg" alt="コンピュータビジョン" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>コンピュータビジョン</h2>
+                                    </div>
+                                    <p class="course-description">画像認識と処理</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 38時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- スクロールエリア -->
-                <div class="scroll-area">
-                    <!-- コース一覧 -->
-                    <div class="section-header">
-                        <h2>コース一覧</h2>
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>モバイルアプリ開発</h2>
+                        </div>
+                        <div class="category-courses">
+                            <!-- モバイルアプリ開発のコースカード -->
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg" alt="iOS開発入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>iOS開発入門</h2>
+                                    </div>
+                                    <p class="course-description">SwiftでiOSアプリ開発</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 45時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg" alt="Android開発基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Android開発基礎</h2>
+                                    </div>
+                                    <p class="course-description">KotlinでAndroidアプリ開発</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 42時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg" alt="Flutter入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Flutter入門</h2>
+                                    </div>
+                                    <p class="course-description">クロスプラットフォーム開発</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 38時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg" alt="React Native基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>React Native基礎</h2>
+                                    </div>
+                                    <p class="course-description">JavaScriptでモバイルアプリ開発</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 35時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg" alt="モバイルUIデザイン" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>モバイルUIデザイン</h2>
+                                    </div>
+                                    <p class="course-description">使いやすいアプリの作り方</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 30時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="course-grid" id="course-list">
-                        <!-- コース一覧が動的に追加されます -->
+
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h2>クラウドコンピューティング</h2>
+                        </div>
+                        <div class="category-courses">
+                            <!-- クラウドコンピューティングのコースカード -->
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg" alt="AWS基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>AWS基礎</h2>
+                                    </div>
+                                    <p class="course-description">AWSクラウドの基礎を学ぶ</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 40時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg" alt="Azure入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Azure入門</h2>
+                                    </div>
+                                    <p class="course-description">Microsoftクラウドの基礎</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 35時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg" alt="GCP基礎" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>GCP基礎</h2>
+                                    </div>
+                                    <p class="course-description">Googleクラウドの基礎</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 38時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg" alt="Kubernetes入門" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>Kubernetes入門</h2>
+                                    </div>
+                                    <p class="course-description">コンテナオーケストレーション</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 45時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+
+                            <div class="course-card">
+                                <img src="https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg" alt="DevOps実践" class="course-thumbnail">
+                                <div class="course-card-content">
+                                    <div class="course-card-header">
+                                        <h2>DevOps実践</h2>
+                                    </div>
+                                    <p class="course-description">クラウドでのDevOps実践</p>
+                                    <div class="course-info">
+                                        <div class="course-stat">
+                                            <span>所要時間: 50時間</span>
+                                        </div>
+                                    </div>
+                                    <button class="course-button">コースを始める</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

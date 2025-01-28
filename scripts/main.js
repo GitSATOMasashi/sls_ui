@@ -673,6 +673,19 @@ const activityData = {
     }
 };
 
+// サムネイル画像のマッピング
+const courseThumbnails = {
+    'programming-basics': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/XmufWAq4RLivvulNY58n9DkH7ApooudfOopy8x32.jpg',
+    'data-science': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/b63AP2okoNUVz8eoIw1F0XGlEOIvVGrq8bMSZwmh.jpg',
+    'web-development': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/8OARGLWGLNM99JoJdGRLy8qqCO1OksrU6Ihn1QHG.jpg',
+    'ai-basics': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/yK7vHrjPY97meNOU5EbmD6wn73o7VfJCJfPHbmXs.jpg',
+    'mobile-app': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/n9lBtvPaHM07vPqJSnhM4NZuH0Krd5MZ9IEivBuR.jpg',
+    'cloud-computing': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/o0plGHkiS5Q0OjP8FbCUNuXd2U6ueK5b9NMy9jXU.jpg',
+    'security': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/e1bBmEVoXH2MSAOVqFXP0g6V0cJicsoNPvdlBtRj.jpg',
+    'devops': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/w4ZnkKvZaZe88JNzO5M2H94yrPSTCwfVkmirBEui.jpg',
+    'blockchain': 'https://utagesystem.s3.ap-northeast-1.amazonaws.com/GYbKT7Y9d0eR/site/6a481X2SSRhF/69BPcYLNFKBOo6s6baoy2cr72T6TgS0Kl9T6lyQp.jpg'
+};
+
 // ダッシュボード更新
 function updateDashboard() {
     // 統計情報の更新
@@ -689,34 +702,37 @@ function updateDashboard() {
     // 続きから学習の更新
     const continuelearning = document.getElementById('continue-learning');
     if (continuelearning) {
-        const recentCourses = Object.entries(learningData.courseProgress)
-            .sort((a, b) => b[1].lastAccessed - a[1].lastAccessed)
-            .slice(0, 3);
+        const inProgressCourses = Object.entries(learningData.courseProgress)
+            .filter(([_, progress]) => progress.totalProgress > 0 && progress.totalProgress < 100)
+            .sort((a, b) => b[1].lastAccessed - a[1].lastAccessed);
 
-        if (recentCourses.length > 0) {
-            continuelearning.innerHTML = recentCourses
+        if (inProgressCourses.length > 0) {
+            continuelearning.innerHTML = inProgressCourses
                 .map(([courseId, progress]) => {
                     const course = courses[courseId];
                     if (!course) return '';
+                    const thumbnailUrl = courseThumbnails[courseId] || 'https://placehold.co/800x400/0891b2/ffffff?text=クラウド';
                     return `
                         <div class="course-card">
-                            <div class="course-card-header">
-                                <h2>${course.title}</h2>
-                                <span class="course-level">${course.level}</span>
+                            <img src="${thumbnailUrl}" alt="${course.title}" class="course-thumbnail">
+                            <div class="course-card-content">
+                                <div class="course-card-header">
+                                    <h2>${course.title}</h2>
+                                </div>
+                                <div class="progress-info">
+                                    進捗率: ${Math.round(progress.totalProgress)}%
+                                </div>
+                                <button class="course-button" onclick="startCourse('${course.id}')">
+                                    続きから学習する
+                                </button>
                             </div>
-                            <div class="progress-info">
-                                進捗率: ${Math.round(progress.totalProgress)}%
-                            </div>
-                            <button class="course-button" onclick="startCourse('${course.id}')">
-                                続きから学習する
-                            </button>
                         </div>
                     `;
                 }).join('');
         } else {
             continuelearning.innerHTML = `
                 <div class="empty-state">
-                    まだ学習を開始していません
+                    まだ学習を開始しているコースはありません
                 </div>
             `;
         }
@@ -726,26 +742,32 @@ function updateDashboard() {
     const courseList = document.getElementById('course-list');
     if (courseList) {
         courseList.innerHTML = Object.values(courses)
-            .map(course => `
-                <div class="course-card">
-                    <div class="course-card-header">
-                        <h2>${course.title}</h2>
-                        <span class="course-level">${course.level}</span>
-                    </div>
-                    <p class="course-description">${course.description}</p>
-                    <div class="course-info">
-                        <div class="course-stat">
-                            <svg class="course-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            所要時間: ${course.totalHours}時間
+            .filter(course => !learningData.courseProgress[course.id] || learningData.courseProgress[course.id].totalProgress === 0)
+            .map(course => {
+                const thumbnailUrl = courseThumbnails[course.id] || 'https://placehold.co/800x400/0891b2/ffffff?text=クラウド';
+                return `
+                    <div class="course-card">
+                        <img src="${thumbnailUrl}" alt="${course.title}" class="course-thumbnail">
+                        <div class="course-card-content">
+                            <div class="course-card-header">
+                                <h2>${course.title}</h2>
+                            </div>
+                            <p class="course-description">${course.description}</p>
+                            <div class="course-info">
+                                <div class="course-stat">
+                                    <svg class="course-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    所要時間: ${course.totalHours}時間
+                                </div>
+                            </div>
+                            <button class="course-button" onclick="startCourse('${course.id}')">
+                                コースを始める
+                            </button>
                         </div>
                     </div>
-                    <button class="course-button" onclick="startCourse('${course.id}')">
-                        ${learningData.courseProgress[course.id] ? '続きから学習する' : 'コースを始める'}
-                    </button>
-                </div>
-            `).join('');
+                `;
+            }).join('');
     }
 }
 
@@ -956,38 +978,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUnreadCount();
 });
 
-// ビュー管理
-function showView(viewId) {
-    console.log('Showing view:', viewId);
-
-    // すべてのビューを非表示
+// ビューの表示を制御する関数
+function showView(viewName) {
+    // すべてのビューを非表示にする
     document.querySelectorAll('.view').forEach(view => {
         view.style.display = 'none';
     });
-
-    // 指定されたビューを表示
-    const targetView = document.getElementById(`${viewId}-view`);
+    
+    // 指定されたビューを表示する
+    const targetView = document.getElementById(`${viewName}-view`);
     if (targetView) {
         targetView.style.display = 'block';
-        
-        // ビュー固有の初期化処理
-        switch(viewId) {
-            case 'notifications':
-                initializeNotifications();
-                break;
-            case 'messages':
-                initializeMessages();
-                break;
-            case 'course':
-                if (selectedCourseId) {
-                    updateCourseDisplay(selectedCourseId);
-                }
-                break;
-        }
     }
-
+    
     // 現在のビューを更新
-    currentView = viewId;
+    currentView = viewName;
     
     // ナビゲーションの状態を更新
     updateNavigation();
@@ -1131,7 +1136,7 @@ function startTutorial() {
         currentStep: 0,
         steps: [
             {
-                title: 'ダッシュボードの確認',
+                title: 'アクションを進め、新たなスキルを獲得しましょう',
                 description: '学習の進捗状況や統計情報を確認できます。',
                 target: '.progress-overview'
             },
@@ -1190,4 +1195,44 @@ function showTutorialStep(stepIndex) {
 
     // スクロール位置の調整
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-} 
+}
+
+// ハンバーガーメニューの制御
+const menuToggle = document.getElementById('menu-toggle');
+const sideNav = document.querySelector('.side-nav');
+const overlay = document.querySelector('.overlay');
+
+function toggleMenu() {
+    sideNav.classList.toggle('is-visible');
+    overlay.classList.toggle('is-visible');
+    document.body.style.overflow = sideNav.classList.contains('is-visible') ? 'hidden' : '';
+}
+
+// メニューボタンのクリックイベント
+menuToggle.addEventListener('click', toggleMenu);
+
+// オーバーレイのクリックイベント
+overlay.addEventListener('click', () => {
+    if (sideNav.classList.contains('is-visible')) {
+        toggleMenu();
+    }
+});
+
+// スマートフォンでメニュー項目をクリックしたら自動的に閉じる
+const menuItems = document.querySelectorAll('.nav-item');
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        if (window.innerWidth <= 1024 && sideNav.classList.contains('is-visible')) {
+            toggleMenu();
+        }
+    });
+});
+
+// 画面リサイズ時の処理
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 1024) {
+        sideNav.classList.remove('is-visible');
+        overlay.classList.remove('is-visible');
+        document.body.style.overflow = '';
+    }
+}); 

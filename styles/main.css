@@ -32,6 +32,7 @@ body {
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 64px;
 }
 
 /* ヘッダー */
@@ -43,8 +44,10 @@ body {
   align-items: center;
   height: 64px;
   border-bottom: 1px solid var(--border-color);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -122,7 +125,12 @@ body {
 .main-container {
   display: grid;
   grid-template-columns: 240px 1fr;
-  min-height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: white;
 }
 
@@ -130,12 +138,32 @@ body {
   grid-template-columns: 240px 1fr 0;
 }
 
+/* オーバーレイ */
+.overlay {
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 56px);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.is-visible {
+  display: block;
+  opacity: 1;
+}
+
 /* サイドナビゲーション */
 .side-nav {
   background: var(--sidebar-bg);
   padding: 20px 0;
   border-right: 1px solid var(--border-color);
+  height: 100%;
   overflow-y: auto;
+  transition: transform 0.3s ease;
 }
 
 .nav-group {
@@ -222,7 +250,8 @@ body {
 .main-content {
   padding: 32px;
   background: white;
-  min-height: calc(100vh - 64px);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .content-header h1 {
@@ -289,6 +318,7 @@ body {
   padding: 12px;
   background: var(--sidebar-bg);
   border-radius: 6px;
+  margin-top: auto;
 }
 
 .action-button {
@@ -446,6 +476,18 @@ body {
     width: 95%;
     max-height: 90vh;
   }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 56px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 }
 
 @media (min-width: 1025px) {
@@ -466,14 +508,13 @@ body {
 
   .side-nav {
     position: fixed;
-    left: 0;
-    top: 64px;
-    height: calc(100vh - 64px);
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    z-index: 100;
-    background: white;
+    top: 56px;
+    height: calc(100vh - 56px);
     width: 240px;
+    z-index: 1000;
+    background: white;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
   }
 
   .side-nav.is-visible {
@@ -506,6 +547,23 @@ body {
     background: white;
     box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
   }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 56px);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .overlay.is-visible {
+    display: block;
+    opacity: 1;
+  }
 }
 
 @media (max-width: 640px) {
@@ -518,22 +576,75 @@ body {
   }
 }
 
-/* オーバーレイ */
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 90;
-  backdrop-filter: blur(2px);
-  transition: opacity 0.3s ease;
+/* カテゴリセクション */
+.category-section {
+    margin-bottom: 48px;
+    overflow: hidden;
 }
 
-.overlay.is-visible {
-  display: block;
+.category-section:last-child {
+    margin-bottom: 0;
+}
+
+.category-header {
+    margin-bottom: 24px;
+    padding: 0 24px;
+}
+
+.category-header h2 {
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.category-courses {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 4px 24px;
+    margin: 0 -24px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+}
+
+.category-courses .course-card {
+    flex: 0 0 300px;
+    margin: 0;
+}
+
+/* スクロールバーのスタイリング */
+.category-courses::-webkit-scrollbar {
+    height: 8px;
+}
+
+.category-courses::-webkit-scrollbar-track {
+    background: var(--hover-bg);
+    border-radius: 4px;
+}
+
+.category-courses::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.category-courses::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .category-header {
+        padding: 0 16px;
+    }
+
+    .category-courses {
+        padding: 4px 16px;
+        margin: 0 -16px;
+    }
+
+    .category-courses .course-card {
+        flex: 0 0 280px;
+    }
 }
 
 /* コースグリッド */
@@ -545,11 +656,15 @@ body {
 }
 
 .course-card {
+  flex: 0 0 300px;
   background: white;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 24px;
+  overflow: hidden;
   transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
 }
 
 .course-card:hover {
@@ -586,6 +701,7 @@ body {
   font-size: var(--text-sm);
   line-height: var(--leading-relaxed);
   margin: 0 0 20px 0;
+  flex: 1;
 }
 
 .course-info {
@@ -593,6 +709,7 @@ body {
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 20px;
+  margin-top: auto;
 }
 
 .course-stat {
@@ -616,25 +733,19 @@ body {
 }
 
 .course-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
   width: 100%;
   padding: 12px;
-  background: var(--primary-color);
+  background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: var(--text-sm);
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.15s ease;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
 .course-button:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
+  background-color: #0056b3;
 }
 
 .course-button-icon {
@@ -643,10 +754,85 @@ body {
   stroke: currentColor;
 }
 
+.course-thumbnail {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  display: block;
+}
+
+.course-card-content {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 /* レスポンシブ対応 */
+@media (max-width: 1200px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .course-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 16px;
+  }
+  
+  .tutorial-section,
+  .continue-learning-section {
+    padding: 24px;
+  }
+
+  .course-card {
+    width: 100%;
+    min-height: auto;
+    margin: 0;
+  }
+
+  .course-thumbnail {
+    width: 100%;
+    aspect-ratio: 16/9;
+  }
+
+  .course-card-content {
+    padding: 16px;
+  }
+
+  .course-card-header h2 {
+    font-size: var(--text-base);
+    line-height: 1.4;
+  }
+
+  .course-description {
+    font-size: var(--text-sm);
+    margin-bottom: 16px;
+  }
+
+  .course-info {
+    margin-top: auto;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .course-button {
+    margin: 0;
+    padding: 14px;
+  }
+
+  .course-scroll {
+    padding: 0 16px;
+    margin: 0;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .course-scroll .course-card {
+    flex: 0 0 100%;
+    margin-right: 0;
   }
 }
 
@@ -1572,6 +1758,10 @@ body {
   display: none;
 }
 
+.view.active {
+  display: block;
+}
+
 /* 質問履歴 */
 .question-list {
     display: flex;
@@ -1836,12 +2026,6 @@ body {
     padding: 24px;
 }
 
-.continue-learning-section h2 {
-    font-size: var(--text-xl);
-    color: var(--text-primary);
-    margin: 0 0 16px 0;
-}
-
 .progress-overview {
     margin-top: 24px;
 }
@@ -1876,13 +2060,22 @@ body {
 /* 続きから学習するコース */
 .course-scroll {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     overflow-x: auto;
-    padding: 8px 4px;
-    scroll-snap-type: x mandatory;
+    padding: 4px 4px 20px 4px;
+    margin: 0 -4px;
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    width: 100%;
 }
 
+.course-scroll .course-card {
+    flex: 0 0 300px;
+    margin: 0;
+}
+
+/* スクロールバーのスタイリング */
 .course-scroll::-webkit-scrollbar {
     height: 8px;
 }
@@ -1901,9 +2094,15 @@ body {
     background: var(--text-secondary);
 }
 
-.course-scroll .course-card {
-    min-width: 280px;
-    scroll-snap-align: start;
+@media (max-width: 768px) {
+    .course-scroll {
+        padding: 4px 4px 16px 4px;
+        margin: 0 -4px;
+    }
+
+    .course-scroll .course-card {
+        flex: 0 0 280px;
+    }
 }
 
 /* チュートリアル */
@@ -1980,4 +2179,304 @@ body {
 
 .tutorial-next:hover {
     background: #4338ca;
+}
+
+/* メインコンテンツのレイアウト */
+.single-column-section {
+  width: 100%;
+  margin: 0 0 48px;
+}
+
+.single-column-section > * {
+  margin-bottom: 32px;
+}
+
+.single-column-section > *:last-child {
+  margin-bottom: 0;
+}
+
+/* 進捗オーバービュー */
+.progress-overview .dashboard-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* チュートリアルセクション */
+.tutorial-section {
+  background: linear-gradient(135deg, var(--primary-light), #fff);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+}
+
+.tutorial-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 16px;
+}
+
+.tutorial-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 16px;
+}
+
+.tutorial-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}
+
+/* 学習再開セクション */
+.continue-learning-section {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal.is-visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* スクロールバーのスタイリング */
+.side-nav::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.side-nav::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track {
+    background: var(--hover-bg);
+}
+
+.side-nav::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.side-nav::-webkit-scrollbar-thumb:hover,
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* スマートフォン向けの改善 */
+@media (max-width: 768px) {
+  body {
+    padding-top: 56px; /* ヘッダーの高さを小さく */
+  }
+
+  .header {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .main-content {
+    padding: 16px;
+  }
+
+  .course-card {
+    min-height: auto;
+    margin-bottom: 16px;
+  }
+
+  .course-card-content {
+    padding: 16px;
+  }
+
+  .course-info {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .course-button {
+    padding: 14px;
+    font-size: var(--text-base);
+  }
+
+  /* タッチ操作の改善 */
+  .nav-item,
+  .course-button,
+  .action-button,
+  .notification-button,
+  .message-button {
+    min-height: 44px; /* タップ領域を広く */
+  }
+
+  /* スペーシングの調整 */
+  .section-header {
+    margin: 24px 0 16px 0;
+  }
+
+  .dashboard {
+    gap: 16px;
+  }
+
+  .course-grid {
+    gap: 16px;
+  }
+
+  /* フォントサイズの調整 */
+  .course-card-header h2 {
+    font-size: var(--text-base);
+  }
+
+  .course-description {
+    font-size: var(--text-base);
+  }
+
+  /* スクロールの改善 */
+  .side-nav,
+  .main-content {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* モーダルの調整 */
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  /* ナビゲーションの改善 */
+  .side-nav {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-item {
+    padding: 12px 16px;
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
+/* タブレット向けの調整 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .course-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .main-content {
+    padding: 24px;
+  }
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.menu-button {
+    display: none;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--text-primary);
+    border-radius: 8px;
+    transition: all 0.15s ease;
+}
+
+.menu-button:hover {
+    background: var(--hover-bg);
+}
+
+.menu-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 1024px) {
+    .menu-button {
+        display: block;
+    }
+
+    .side-nav {
+        position: fixed;
+        left: -240px;
+        top: 56px;
+        height: calc(100vh - 56px);
+        width: 240px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+        background: white;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .side-nav.is-visible {
+        left: 0;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 56px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 56px);
+        z-index: 999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .overlay.is-visible {
+        display: block;
+        opacity: 1;
+    }
+
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        height: 56px;
+    }
+
+    .side-nav {
+        width: 100%;
+        left: -100%;
+    }
 } 
