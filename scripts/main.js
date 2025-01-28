@@ -876,127 +876,111 @@ function toggleReadStatus() {
     updateUnreadCount();
 }
 
-// DOMContentLoadedイベントリスナー
+// ビューの切り替え機能
+function switchView(viewId) {
+    console.log('Switching to view:', viewId); // デバッグ用
+    
+    // すべてのビューを非表示
+    document.querySelectorAll('.view').forEach(view => {
+        view.classList.remove('active');
+        view.style.display = 'none';
+    });
+    
+    // 指定されたビューを表示
+    const targetView = document.getElementById(viewId);
+    if (targetView) {
+        targetView.classList.add('active');
+        targetView.style.display = 'block';
+        console.log('View found and activated:', viewId); // デバッグ用
+
+        // ビューに応じた追加の更新処理
+        if (viewId === 'questions-view') {
+            updateQuestionList();
+        } else if (viewId === 'notifications-view') {
+            initializeNotifications();
+        }
+    } else {
+        console.log('View not found:', viewId); // デバッグ用
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // 要素の取得
     const sideNav = document.querySelector('.side-nav');
     const overlay = document.querySelector('.overlay');
-    const menuButton = document.querySelector('.menu-button');
-    const markAsReadButton = document.querySelector('.mark-as-read-button');
-    const markAllAsReadButton = document.querySelector('.mark-all-as-read-button');
-    let currentNotificationId = null;
+    const menuButton = document.getElementById('menu-toggle');
 
-    // メディアクエリの設定
-    const mediaQuery = window.matchMedia('(max-width: 1024px)');
-
-    // サイドナビの表示制御
-    function toggleSideNav() {
-        const isVisible = sideNav.classList.contains('is-visible');
+    // ハンバーガーメニューの制御
+    function toggleMenu() {
+        console.log('Toggle menu clicked'); // デバッグ用
         sideNav.classList.toggle('is-visible');
-        
-        if (mediaQuery.matches) {
-            overlay.classList.toggle('is-visible');
-            document.body.style.overflow = isVisible ? '' : 'hidden';
-        }
+        overlay.classList.toggle('is-visible');
+        document.body.style.overflow = sideNav.classList.contains('is-visible') ? 'hidden' : '';
     }
 
-    // すべてのお知らせを既読にする関数
-    function markAllAsRead() {
-        notificationData.markAllAsRead();
-        document.querySelectorAll('.notification-item').forEach(item => {
-            item.classList.remove('unread');
+    // メニューボタンのクリックイベント
+    if (menuButton) {
+        menuButton.addEventListener('click', toggleMenu);
+        console.log('Menu button event listener added'); // デバッグ用
+    }
+
+    // オーバーレイのクリックイベント
+    if (overlay) {
+        overlay.addEventListener('click', () => {
+            if (sideNav.classList.contains('is-visible')) {
+                toggleMenu();
+            }
         });
-        if (currentNotificationId) {
-            markAsReadButton.textContent = '未読にする';
-        }
-        updateUnreadCount();
     }
 
-    // すべて既読ボタンのイベントリスナー
-    if (markAllAsReadButton) {
-        markAllAsReadButton.addEventListener('click', markAllAsRead);
-    }
-
-    // 既読/未読切り替えボタンのイベントリスナー
-    if (markAsReadButton) {
-        markAsReadButton.addEventListener('click', toggleReadStatus);
-    }
-
-    // ナビゲーションアイテムのクリックイベントを設定
+    // メニュー項目のクリックイベント
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
-            const view = item.dataset.view;
-            showView(view);
+            
+            // href属性から対象のビューIDを取得
+            const targetView = item.getAttribute('href').substring(1);
+            console.log('Nav item clicked, target:', targetView); // デバッグ用
+            
+            // ビューを切り替え
+            switchView(targetView);
+
+            // アクティブなメニュー項目のスタイルを更新
+            document.querySelectorAll('.nav-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            item.classList.add('active');
+
+            // スマートフォンでメニューを閉じる
+            if (window.innerWidth <= 1024) {
+                setTimeout(() => {
+                    sideNav.classList.remove('is-visible');
+                    overlay.classList.remove('is-visible');
+                    document.body.style.overflow = '';
+                }, 100);
+            }
         });
     });
 
-    // 質問詳細モーダルを閉じる
-    const questionDetailModal = document.getElementById('question-detail-modal');
-    if (questionDetailModal) {
-        const closeButton = questionDetailModal.querySelector('.modal-close-button');
-        if (closeButton) {
-            closeButton.addEventListener('click', () => {
-                questionDetailModal.classList.remove('is-visible');
-            });
+    // 画面リサイズ時の処理
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 1024) {
+            sideNav.classList.remove('is-visible');
+            overlay.classList.remove('is-visible');
+            document.body.style.overflow = '';
         }
-    }
+    });
 
-    // フィルターの変更イベント
-    const statusFilter = document.getElementById('status-filter');
-    const courseFilter = document.getElementById('course-filter');
+    // 初期表示の設定（ホーム画面を表示）
+    switchView('home-view');
+    document.querySelector('.nav-item[href="#home-view"]')?.classList.add('active');
 
-    if (statusFilter && courseFilter) {
-        // コースフィルターの選択肢を追加
-        Object.values(courses).forEach(course => {
-            courseFilter.innerHTML += `
-                <option value="${course.id}">${course.title}</option>
-            `;
-        });
-
-        // フィルター変更時のイベント
-        statusFilter.addEventListener('change', () => {
-            updateQuestionList({
-                status: statusFilter.value,
-                courseId: courseFilter.value
-            });
-        });
-
-        courseFilter.addEventListener('change', () => {
-            updateQuestionList({
-                status: statusFilter.value,
-                courseId: courseFilter.value
-            });
-        });
-    }
-
-    // 初期表示
-    showView('home');
+    // 初期データの更新
     updateDashboard();
     updateQuestionList();
     activityData.updateActivityDisplay();
     updateUnreadCount();
 });
-
-// ビューの表示を制御する関数
-function showView(viewName) {
-    // すべてのビューを非表示にする
-    document.querySelectorAll('.view').forEach(view => {
-        view.style.display = 'none';
-    });
-    
-    // 指定されたビューを表示する
-    const targetView = document.getElementById(`${viewName}-view`);
-    if (targetView) {
-        targetView.style.display = 'block';
-    }
-    
-    // 現在のビューを更新
-    currentView = viewName;
-    
-    // ナビゲーションの状態を更新
-    updateNavigation();
-}
 
 // お知らせの初期化
 function initializeNotifications() {
@@ -1195,44 +1179,4 @@ function showTutorialStep(stepIndex) {
 
     // スクロール位置の調整
     target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-// ハンバーガーメニューの制御
-const menuToggle = document.getElementById('menu-toggle');
-const sideNav = document.querySelector('.side-nav');
-const overlay = document.querySelector('.overlay');
-
-function toggleMenu() {
-    sideNav.classList.toggle('is-visible');
-    overlay.classList.toggle('is-visible');
-    document.body.style.overflow = sideNav.classList.contains('is-visible') ? 'hidden' : '';
-}
-
-// メニューボタンのクリックイベント
-menuToggle.addEventListener('click', toggleMenu);
-
-// オーバーレイのクリックイベント
-overlay.addEventListener('click', () => {
-    if (sideNav.classList.contains('is-visible')) {
-        toggleMenu();
-    }
-});
-
-// スマートフォンでメニュー項目をクリックしたら自動的に閉じる
-const menuItems = document.querySelectorAll('.nav-item');
-menuItems.forEach(item => {
-    item.addEventListener('click', () => {
-        if (window.innerWidth <= 1024 && sideNav.classList.contains('is-visible')) {
-            toggleMenu();
-        }
-    });
-});
-
-// 画面リサイズ時の処理
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 1024) {
-        sideNav.classList.remove('is-visible');
-        overlay.classList.remove('is-visible');
-        document.body.style.overflow = '';
-    }
-}); 
+} 
