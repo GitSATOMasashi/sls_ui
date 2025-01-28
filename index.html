@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success Learning</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="overlay"></div>
+    <header class="header">
+        <a href="/" class="logo">Addness</a>
+    </header>
+
+    <div class="main-container">
+        <!-- サイドナビゲーション -->
+        <nav class="side-nav">
+            <div class="nav-section">
+                <div class="nav-group">
+                    <a href="#" class="nav-item active" data-view="home">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        ホーム
+                    </a>
+                    <a href="#" class="nav-item" data-view="questions">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        質問履歴
+                    </a>
+                    <a href="#" class="nav-item" data-view="notifications">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        お知らせ
+                        <span class="nav-badge notification-badge">2</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="messages">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        メッセージ
+                        <span class="nav-badge message-badge">2</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- ホームビュー -->
+            <div class="view" id="home-view">
+                <!-- ファーストビューエリア -->
+                <div class="first-view-area">
+                    <!-- 行動喚起と学習再開を横並びに -->
+                    <div class="main-actions">
+                        <div class="action-prompt">
+                            <h2>チュートリアルを始めよう</h2>
+                            <p>Workschoolキャリアならではの機能をチュートリアルで体験し、バッジを獲得しましょう。</p>
+                            <button class="tutorial-button" onclick="startTutorial()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                                チュートリアルを開始
+                            </button>
+                        </div>
+                        <div class="continue-learning-section">
+                            <h2>学習を再開する</h2>
+                            <div class="course-scroll" id="continue-learning">
+                                <!-- 続きから学習するコースが動的に追加されます -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 進捗状況（コンパクトに） -->
+                    <div class="progress-overview">
+                        <div class="dashboard-card">
+                            <div class="progress-header">
+                                <h2>学習の進捗</h2>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 65%"></div>
+                                </div>
+                                <p class="progress-info">全体の<span id="total-progress">65</span>%完了</p>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-label">学習時間</span>
+                                    <span class="stat-value" id="total-hours">24.5</span>h
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">完了コース</span>
+                                    <span class="stat-value" id="completed-courses">2</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">質問数</span>
+                                    <span class="stat-value" id="question-count">5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- スクロールエリア -->
+                <div class="scroll-area">
+                    <!-- コース一覧 -->
+                    <div class="section-header">
+                        <h2>コース一覧</h2>
+                    </div>
+                    <div class="course-grid" id="course-list">
+                        <!-- コース一覧が動的に追加されます -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 質問履歴ビュー -->
+            <div class="view" id="questions-view">
+                <div class="content-header">
+                    <h1>質問履歴</h1>
+                </div>
+                <div class="question-list">
+                    <div class="question-filters">
+                        <select id="status-filter">
+                            <option value="all">すべての状態</option>
+                            <option value="answered">回答済み</option>
+                            <option value="pending">未回答</option>
+                        </select>
+                        <select id="course-filter">
+                            <option value="all">すべてのコース</option>
+                        </select>
+                    </div>
+                    <div id="questions-container">
+                        <!-- 質問が動的に追加されます -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- コースビュー -->
+            <div class="view" id="course-view">
+                <div class="content-header">
+                    <h1>コースタイトル</h1>
+                    <button class="back-button" onclick="showView('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        ホームに戻る
+                    </button>
+                </div>
+                
+                <div class="action-content">
+                    <div class="action-card">
+                        <h2>現在の進捗</h2>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 0%"></div>
+                        </div>
+                        <p class="progress-info">0% 完了</p>
+                    </div>
+
+                    <div class="action-steps">
+                        <!-- ステップが動的に追加されます -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- お知らせビュー -->
+            <div class="view" id="notifications-view">
+                <div class="content-header">
+                    <h1>お知らせ</h1>
+                    <button class="mark-all-as-read-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mark-all-as-read-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        すべて既読にする
+                    </button>
+                </div>
+                <div class="notification-container">
+                    <div class="notification-list">
+                        <!-- お知らせ一覧が動的に追加されます -->
+                    </div>
+                    <div class="notification-detail" id="notification-detail">
+                        <div class="notification-detail-header">
+                            <button class="mark-as-read-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mark-as-read-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                既読にする
+                            </button>
+                        </div>
+                        <div class="notification-detail-content">
+                            <div class="notification-detail-meta">
+                                <span class="status-badge"></span>
+                                <div class="notification-date"></div>
+                            </div>
+                            <h3 class="notification-detail-title"></h3>
+                            <div class="notification-detail-body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メッセージビュー -->
+            <div class="view" id="messages-view">
+                <div class="content-header">
+                    <h1>メッセージ</h1>
+                </div>
+                <div class="message-container">
+                    <div class="message-list">
+                        <!-- メッセージ一覧が動的に追加されます -->
+                    </div>
+                    <div class="message-detail" id="message-detail">
+                        <div class="message-detail-header">
+                            <div class="message-detail-info">
+                                <div class="message-detail-name">システム管理者</div>
+                                <div class="message-detail-status">オンライン</div>
+                            </div>
+                        </div>
+                        <div class="message-detail-content">
+                            <div class="message-timeline">
+                                <!-- メッセージ内容が動的に追加されます -->
+                            </div>
+                        </div>
+                        <div class="message-input-area">
+                            <textarea class="message-input" placeholder="メッセージを入力..."></textarea>
+                            <button class="send-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 質問詳細モーダル -->
+    <div id="question-detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>質問詳細</h2>
+                <button class="modal-close-button">
+                    <svg class="modal-close-icon" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 質問詳細が動的に追加されます -->
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+</body>
+</html> 
