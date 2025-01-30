@@ -719,6 +719,7 @@ function updateDashboard() {
                                 <div class="course-card-header">
                                     <h2>${course.title}</h2>
                                 </div>
+                                <p class="course-description">Webの基礎から学ぶ</p>
                                 <div class="progress-info">
                                     進捗率: ${Math.round(progress.totalProgress)}%
                                 </div>
@@ -765,7 +766,7 @@ function updateDashboard() {
                                     <svg class="course-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                     </svg>
-                                    所要時間: ${course.totalHours}時間
+                                    進捗率: ${Math.round(progress.totalProgress)}%
                                 </div>
                             </div>
                             <button class="course-button" onclick="startCourse('${course.id}')">
