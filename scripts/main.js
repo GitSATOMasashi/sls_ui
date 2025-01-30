@@ -723,7 +723,7 @@ function updateDashboard() {
                                     進捗率: ${Math.round(progress.totalProgress)}%
                                 </div>
                                 <button class="course-button" onclick="startCourse('${course.id}')">
-                                    続きから学習する
+                                    進む
                                 </button>
                             </div>
                         </div>
@@ -762,7 +762,7 @@ function updateDashboard() {
                                 </div>
                             </div>
                             <button class="course-button" onclick="startCourse('${course.id}')">
-                                コースを始める
+                                はじめる
                             </button>
                         </div>
                     </div>
@@ -1060,11 +1060,20 @@ function initializeMessages() {
 
 // 未読数を更新する関数
 function updateUnreadCount() {
+    // お知らせの未読数を更新
     const unreadCount = Object.values(notificationData.notifications).filter(n => !n.isRead).length;
     const notificationBadge = document.querySelector('.notification-badge');
     if (notificationBadge) {
         notificationBadge.textContent = unreadCount;
         notificationBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
+    }
+
+    // 質問の未回答数を更新
+    const pendingQuestions = Object.values(questionData.questions).filter(q => q.status === 'pending').length;
+    const questionBadge = document.querySelector('.question-badge');
+    if (questionBadge) {
+        questionBadge.textContent = pendingQuestions;
+        questionBadge.style.display = pendingQuestions > 0 ? 'flex' : 'none';
     }
 
     // メッセージバッジの更新（仮の実装）
