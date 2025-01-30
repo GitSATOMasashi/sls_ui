@@ -732,7 +732,14 @@ function updateDashboard() {
         } else {
             continuelearning.innerHTML = `
                 <div class="empty-state">
-                    まだ学習を開始しているコースはありません
+                    <p class="empty-state-text">まだ開始しているコースはありません</p>
+                    <p class="empty-state-subtext">チュートリアルを見ながら、<br>システムの使い方を学んでいきましょう。</p>
+                    <button class="empty-state-button" onclick="startTutorial()">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        チュートリアルを開始
+                    </button>
                 </div>
             `;
         }
