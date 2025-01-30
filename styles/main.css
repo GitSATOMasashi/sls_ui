@@ -298,7 +298,7 @@ body {
   background: white;
   padding: 48px 24px;
   border-radius: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 0px;
   color: var(--text-secondary);
   text-align: center;
   border: 2px dashed var(--border-color);
